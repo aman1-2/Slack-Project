@@ -1,11 +1,11 @@
 import { Router } from "express";
 
+import { signUp } from "../../controllers/userController.js";
+import { validate } from "../../validators/zodValidator.js";
+import { userSignUpSchema } from "../../validators/userSchema.js";
+
 const router = Router();
 
-router.get('/', (req,res) => {
-    return res.status(200).json({
-        message: "All Users got"
-    });
-});
+router.post('/signup', validate(userSignUpSchema), signUp);
 
 export default router;
