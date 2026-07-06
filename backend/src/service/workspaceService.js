@@ -5,6 +5,18 @@ import ValidationError from "../utils/errors/validationError.js";
 import channelRepository from '../repositories/channelRepository.js';
 import ClientError from '../utils/errors/clientError.js';
 
+const isUserAdminOfWorkspace = (workspace, userId) => {
+    return workspace.members.find(
+        (member) => member.memberId.toString() === userId && member.role === 'admin'
+    );
+};
+
+const isUserMemberOfWorkspace = (workspace, userId) => {
+    return workspace.members.find(
+        (member) => member.memberId.toString() === userId
+    );
+}; 
+
 export const createWorkspaceService = async (workspaceData) => {
     try {
         const joinCode = uuidv4().toUpperCase(); // This will return 36 character string
@@ -66,9 +78,11 @@ export const deleteWorkspaceService = async (workspaceId, userId) => {
             });
         }
 
-        const isAllowed = workspace.members.find(
-            (member) => member.memberId.toString() === userId && member.role === 'admin'
-        );
+        // const isAllowed = workspace.members.find(
+        //     (member) => member.memberId.toString() === userId && member.role === 'admin'
+        // );
+
+        const isAllowed = isUserAdminOfWorkspace(workspace, userId);
 
         // const channelIds = workspace.channels.map((channel) => channel._id);
 
@@ -91,4 +105,32 @@ export const deleteWorkspaceService = async (workspaceId, userId) => {
         console.log("Workspace deletion Service Layer Error: ", error);
         throw error;
     }
-}
+};
+
+export const getWorkspaceService = async (workspaceId, userId) => {
+    try {
+        const workspace = await workspaceRepository.getById(workspaceId);
+        if(!workspace) { // If workspace not exists
+            throw new ClientError({
+                explanation: 'Invalid data sent from the client',
+                message: 'Workspace not found',
+                statusCode: 404
+            });
+        }
+
+        const isMember = isUserMemberOfWorkspace(workspace, userId);
+
+        if(!isMember) { // If user not memeber of workspace
+            throw new ClientError({
+                explanation: 'Invalid data sent from the client',
+                message: 'User not member of Workspace',
+                statusCode: 401
+            });
+        }
+
+        return workspace;
+    } catch (error) {
+        console.log("Get (details) Workspace Service Layer Error: ", error);
+        throw error;
+    }
+};
