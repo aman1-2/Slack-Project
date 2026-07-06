@@ -36,7 +36,7 @@ const workspaceRepository = {
                 throw new ClientError({
                     explanation: "Invalid data send from client",
                     message: "Workspace not found",
-                    statusCode: "404"
+                    statusCode: 404
                 });
             }
 
@@ -117,7 +117,7 @@ const workspaceRepository = {
             }
 
             // If channel doesn't exist then its first time this channel is going to created so we need to create this channel.
-            const channel = await channelRepository.create({name: channelName});
+            const channel = await channelRepository.create({name: channelName, workspaceId: workspaceId});
 
             workspace.channels.push(channel);
 
@@ -149,6 +149,19 @@ const workspaceRepository = {
         } catch(error) {
             console.log("Workspace Repository fetch all workspace by member-id Error: ", error);
             throw error;
+        }
+    },
+
+    getWorkspaceDetailsById: async function(workspaceId) {
+        try {
+            const workspace = Workspace.findById(workspaceId)
+            .populate('members.memberId', 'username email avatar')
+            .populate('channels');
+
+            return workspace;
+        } catch(error) {
+           console.log("Get workspace details by id Repository Layer Error: ", error);
+            throw error; 
         }
     }
 };
