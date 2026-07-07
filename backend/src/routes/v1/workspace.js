@@ -35,7 +35,9 @@ router.get(
 router.get(
     '/join/:joinCode', 
     isAuthenticates, 
-    getWorkspaceByJoinCodeController);
+    getWorkspaceByJoinCodeController
+);
+
 router.put(
     '/:workspaceId', 
     isAuthenticates, 
