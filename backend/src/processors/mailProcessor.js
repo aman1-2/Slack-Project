@@ -10,7 +10,7 @@ new Worker('mailQueue', async (job) => {
     try {
         const response = await mailer.sendMail(emailData);
         console.log("Email Sent", response);
-    } catch(error) {
+    } catch(error) { 
         console.log("Error Processing mail: ", error);
     }
 }, { connection: redisConfig});
