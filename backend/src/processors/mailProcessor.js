@@ -1,7 +1,9 @@
-import mailQueue from "../queues/mailQueue.js";
-import mailer from "../config/mailConfig.js";
+import { Worker } from 'bullMq';
 
-mailQueue.process(async (job) => {
+import mailer from "../config/mailConfig.js";
+import redisConfig from '../config/redisConfig.js';
+
+new Worker('mailQueue', async (job) => {
     const emailData = job.data;
     console.log("Processing Email", emailData);
 
@@ -11,4 +13,4 @@ mailQueue.process(async (job) => {
     } catch(error) {
         console.log("Error Processing mail: ", error);
     }
-});
+}, { connection: redisConfig});
