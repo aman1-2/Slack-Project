@@ -6,6 +6,7 @@ import connectDB from './config/dbConfig.js';
 import { PORT } from './config/serverConfig.js';
 import apiRouter from './routes/index.js';
 import bullServerAdapter from './config/bullBoardConfig.js';
+import { messageHandlers } from './controllers/messageSocketController.js';
 
 const app = express();
 const server = createServer(app);
@@ -24,17 +25,19 @@ app.get('/ping', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('Web-Socker Connection Successful.', socket.id);
+  console.log('Web-Socket Connection Successful.', socket.id);
 
   // setTimeout(() => {
   //   socket.emit('message', "This is a message from the server");
   // }, 3000);
 
-  socket.on('messageFromClient', (data) => {
-    console.log("Message from Client : ", data);
+  // socket.on('messageFromClient', (data) => {
+  //   console.log("Message from Client : ", data);
 
-    io.emit('new message', data.toUpperCase());
-  });
+  //   io.emit('new message', data.toUpperCase());
+  // });
+
+  messageHandlers(io, socket);
   
 });
 

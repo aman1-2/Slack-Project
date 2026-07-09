@@ -45,3 +45,13 @@ export const getMessagesService = async (messageParams, page, limit, userId) => 
         throw error;
     }
 };
+
+export const createMessageService = async(messageData) => {
+    try {
+        const messageResponse = messageRepository.create(messageData);
+        return messageResponse;
+    } catch(error) {
+        console.log("Message Service Layer Error while Creating Message: ", error);
+        throw error;
+    }
+};
