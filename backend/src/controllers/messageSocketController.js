@@ -1,15 +1,22 @@
 import { createMessageService } from "../service/messageService.js";
-import { NEW_MESSAGE_EVENT } from "../utils/common/eventConstant.js";
+import { NEW_MESSAGE_EVENT, NEW_MESSAGE_RECEIVED_EVENT } from "../utils/common/eventConstant.js";
 
-export const messageHandlers = (io, socket) => {
-    socket.on(NEW_MESSAGE_EVENT, createMessageHandler);
-};
+export default function messageSocketHandlers(io, socket) {
+    socket.on(NEW_MESSAGE_EVENT, 
+        async function createMessageHandler(messageData, cb) {
+            const messageResponse = await createMessageService(messageData);
 
-async function createMessageHandler(messageData, cb) {
-    const messageResponse = await createMessageService(messageData);
-    cb({
-        status: true,
-        message: "Successfully Created the Message.",
-        data: messageResponse
-    });
+            const roomId = messageData.channelId; 
+
+            console.log("Room Id where New-Message-event is Trigged is: ", roomId);
+
+            io.to(roomId).emit(NEW_MESSAGE_RECEIVED_EVENT, messageResponse); // Implementation of Rooms
+            
+            cb({
+                status: true,
+                message: "Successfully Created the Message.",
+                data: messageResponse
+            });
+        }
+    );
 };
