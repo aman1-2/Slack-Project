@@ -15,16 +15,26 @@ export const AuthContextProvider = ({ children }) => {
 
     // /** Throwing Error because we are just fetching and updating a value inside useEffect */
     // useEffect(() => {
-    //     const user = localStorage.getItem('user');
-    //     const token = localStorage.getItem('token');
+    //     try{
+    //         const user = localStorage.getItem('user');
+    //         const token = localStorage.getItem('token');
 
-    //     if(user && token) {
-    //         // setUser(JSON.parse(user));
-    //         // setToken(token);
+    //         if(user && token) {
+    //             // setUser(JSON.parse(user));
+    //             // setToken(token);
+
+    //             setAuth({
+    //                 user: user ? JSON.parse(user) : null,
+    //                 token: token || null,
+    //                 isLoading: (user && token) || (!user || !token) ? false : true
+    //             });
+    //         }
+    //     } catch(error) {
+    //         console.log('Failed to load auth data: ', error);
 
     //         setAuth({
-    //             user: JSON.parse(user),
-    //             token: token,
+    //             user: null,
+    //             token: null,
     //             isLoading: false
     //         });
     //     }
@@ -35,11 +45,21 @@ export const AuthContextProvider = ({ children }) => {
     const token = localStorage.getItem('token');
 
     const [auth, setAuth] = useState(() => {
-        return {
+        try{
+            return {
             user: user ? JSON.parse(user) : null,
             token: token || null,
-            isloading: (user && token) ? false : true
+            isLoading: false
         };
+        } catch(error) {
+            console.log('Failed to load auth data: ', error);
+
+            return({
+                user: null,
+                token: null,
+                isLoading: false
+            });
+        }
     });
 
     return (
