@@ -9,10 +9,11 @@ export const AuthContextProvider = ({ children }) => {
 
     // const [auth, setAuth] = useState({
     //     user: null,
-    //     token: ''
+    //     token: null,
+    //     isLoading: true
     // });
 
-    /** Throwing Error because we are just fetching and updating a value inside useEffect */
+    // /** Throwing Error because we are just fetching and updating a value inside useEffect */
     // useEffect(() => {
     //     const user = localStorage.getItem('user');
     //     const token = localStorage.getItem('token');
@@ -23,7 +24,8 @@ export const AuthContextProvider = ({ children }) => {
 
     //         setAuth({
     //             user: JSON.parse(user),
-    //             token: token
+    //             token: token,
+    //             isLoading: false
     //         });
     //     }
 
@@ -35,7 +37,8 @@ export const AuthContextProvider = ({ children }) => {
     const [auth, setAuth] = useState(() => {
         return {
             user: user ? JSON.parse(user) : null,
-            token: token || null
+            token: token || null,
+            isloading: (user && token) ? false : true
         };
     });
 
