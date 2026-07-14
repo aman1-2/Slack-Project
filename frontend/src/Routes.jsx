@@ -7,12 +7,15 @@ import { Auth } from '@/pages/Auth/Auth';
 import Home from '@/pages/Home/Home';
 import NotFound from '@/pages/NotFound/NotFound';
 
+import { WorkspaceLayout } from './pages/Workspace/Layout';
+
 const AppRoutes = () => {
     return(
         <Routes>
             <Route path="/" element={<h1>The first page</h1>}></Route>
 
             <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>}></Route>
+            <Route path="/workspaces/:workspaceId" element={<ProtectedRoute> <WorkspaceLayout> Workspace </WorkspaceLayout> </ProtectedRoute>}></Route>
             <Route path="/auth/signup" element={<Auth><SignupCardContainer /></Auth>}></Route>
             <Route path="/auth/signin" element={<Auth><SigninCardContainer /></Auth>}></Route>
 

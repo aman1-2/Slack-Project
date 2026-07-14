@@ -7,6 +7,8 @@
 
 @theme inline {
     --color-slack: #5c3b58;
+    --color-slack-dark: #481349;
+    
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
