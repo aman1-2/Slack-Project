@@ -45,7 +45,7 @@ const SigninCardContainer = () => {
 
     useEffect(()=>{
         if(isSuccess) {
-            setTimeout(navigate('/'),2000);
+            setTimeout(navigate('/home'),2000);
         }
     }, [isSuccess, navigate]);
     

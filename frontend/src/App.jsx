@@ -2,6 +2,7 @@ import './App.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { Modals } from '@/components/organism/Modals/Modals';
 import { Toaster } from '@/components/ui/sonner';
 import AppContextProvider from '@/context/AppContextProvider';
 import AppRoutes from '@/Routes';
@@ -15,6 +16,7 @@ function App() {
 
         <AppContextProvider>
           <AppRoutes></AppRoutes>
+          <Modals></Modals>
         </AppContextProvider>
 
         <Toaster position="top-center"></Toaster>

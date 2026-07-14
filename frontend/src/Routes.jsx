@@ -10,7 +10,9 @@ import NotFound from '@/pages/NotFound/NotFound';
 const AppRoutes = () => {
     return(
         <Routes>
-            <Route path="/" element={<ProtectedRoute> <Home /> </ProtectedRoute>}></Route>
+            <Route path="/" element={<h1>The first page</h1>}></Route>
+
+            <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>}></Route>
             <Route path="/auth/signup" element={<Auth><SignupCardContainer /></Auth>}></Route>
             <Route path="/auth/signin" element={<Auth><SigninCardContainer /></Auth>}></Route>
 

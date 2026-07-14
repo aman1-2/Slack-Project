@@ -19,11 +19,11 @@ export const useCreateWorkspace = () => {
         }
     });
 
-    return (
+    return {
         isPending,
         isError,
         isSuccess,
         createWorkspaceMutation
-    );
+    };
 };
 
