@@ -6,7 +6,7 @@ import useAuth from '@/hooks/context/useAuth';
 export const useGetWorkspaceById = (id) => {
     const { auth } = useAuth();
 
-    const {isPending, isSuccess, isError, data: WorkspaceByIdDetails} = useQuery({
+    const {isPending, isSuccess, isError, isLoading, data: workspaceByIdDetails} = useQuery({
         queryFn: (id) => fetchWorkspaceDetailsRequest( {workspaceId: id, token: auth?.token} ),
         queryKey: [`fetchWorkspacebyId-${id}`],
         staleTime: 10000
@@ -16,6 +16,7 @@ export const useGetWorkspaceById = (id) => {
         isPending,
         isError,
         isSuccess,
-        WorkspaceByIdDetails
+        isLoading,
+        workspaceByIdDetails
     };
 };
