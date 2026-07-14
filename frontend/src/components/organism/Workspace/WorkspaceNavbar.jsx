@@ -1,4 +1,4 @@
-import { InfoIcon, LucideLoader2, SearchIcon } from 'lucide-react';
+import { InfoIcon, Loader, SearchIcon } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
@@ -7,11 +7,11 @@ import { useGetWorkspaceById } from '@/hooks/apis/workspaces/useGetWorkspaceById
 export const WorkspaceNavbar = () => {
     const { workspaceId } = useParams();
 
-    const { isLoading, workspaceByIdDetails } = useGetWorkspaceById(workspaceId);
+    const { isFetching, workspaceByIdDetails } = useGetWorkspaceById(workspaceId);
     
-    if(isLoading) {
+    if(isFetching) {
         return (
-            <LucideLoader2 className="animate-spin ml-2"></LucideLoader2>
+            <Loader className="animate-spin ml-2"></Loader>
         );
     }
 
