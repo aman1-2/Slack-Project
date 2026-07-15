@@ -1,4 +1,5 @@
 import { WorkspaceNavbar } from '@/components/organism/Workspace/WorkspaceNavbar';
+import { WorkspacePanel } from '@/components/organism/Workspace/WorkspacePanel';
 import { WorkspaceSidebar } from '@/components/organism/Workspace/WorkspaceSidebar';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 
@@ -13,11 +14,11 @@ export const WorkspaceLayout = ({ children }) => {
                     <ResizablePanel
                         id="left-navigation-panel"
                         defaultSize="20%"
-                        minSize="11%"
+                        minSize="13%"
                         className="bg-slack-medium"
                     >
                         <div>
-                            Sidebar
+                            <WorkspacePanel></WorkspacePanel>
                         </div>
                     </ResizablePanel>
 

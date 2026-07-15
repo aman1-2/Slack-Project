@@ -18,7 +18,7 @@ export const WorkspaceSwitcher = () => {
 
     return(
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger>
                 <div
                     className={cn(
                         buttonVariants({
