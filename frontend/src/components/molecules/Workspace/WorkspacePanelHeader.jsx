@@ -13,7 +13,7 @@ const WorkspacePanelHeader = ({ workspace }) => {
 
     const isUserAdmin = workspaceMemebers.find((member) => (member.memberId === auth?.user?._id && member.role === 'admin'));
 
-    const { setOpenWorkspacePreferenceModal } = useWorkspacePreferencesModal();
+    const { setOpenWorkspacePreferenceModal, setInitialValue } = useWorkspacePreferencesModal();
 
     return( 
         <div className="flex items-center justify-between px-4 h-[50px] gap-0.5" >
@@ -54,7 +54,10 @@ const WorkspacePanelHeader = ({ workspace }) => {
                                 <>
                                     <DropdownMenuItem 
                                         className="cursor-pointer py-2"
-                                        onClick={() => setOpenWorkspacePreferenceModal(true)}
+                                        onClick={() => {
+                                            setOpenWorkspacePreferenceModal(true);
+                                            setInitialValue(workspace?.name);
+                                        }}
                                     >
                                         Preferences
                                     </DropdownMenuItem>
