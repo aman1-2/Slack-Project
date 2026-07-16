@@ -22,7 +22,7 @@ const isUserAdminOfWorkspace = (workspace, userId) => {
 
 const isUserMemberOfWorkspace = (workspace, userId) => {
     return workspace.members.find(
-        (member) => member.memberId.toString() === userId
+        (member) => member.memberId._id.toString() === userId
     );
 }; 
 
@@ -124,7 +124,7 @@ export const deleteWorkspaceService = async (workspaceId, userId) => {
 
 export const getWorkspaceService = async (workspaceId, userId) => {
     try {
-        const workspace = await workspaceRepository.getById(workspaceId);
+        const workspace = await workspaceRepository.getWorkspaceDetailsById(workspaceId);
         if(!workspace) { // If workspace not exists
             throw new ClientError({
                 explanation: 'Invalid data sent from the client',
