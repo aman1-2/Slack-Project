@@ -10,15 +10,11 @@ import useWorkspacePreferencesModal from '@/hooks/context/useWorkspacePreference
 
 const useDeleteWorkspace = () => {
     const { auth } = useAuth();
-
     const { workspace, setOpenWorkspacePreferenceModal } = useWorkspacePreferencesModal();
-
     const { isPending: isPendingFetch, workspaces } = useFetchWorkspace();
-
     const { setOpenCreateWorkspaceModal } = useCreateWorkspaceModal();
 
     const naviagte = useNavigate();
-
     const queryClient = useQueryClient();
 
     function navigateToNextWorkspace() {
@@ -44,6 +40,7 @@ const useDeleteWorkspace = () => {
 
     const { isSuccess, isPending, error, mutateAsync: deleteWorkspaceMutation } = useMutation({
         mutationFn: () => deleteWorkspaceRequest({ workspaceId: workspace._id, token: auth?.token}),
+        
         onSuccess: async (response) => {
             console.log('Successfully Deleted the Workspace: ', response);
             toast.success('Successfully Deleted the Workspace');
@@ -52,6 +49,7 @@ const useDeleteWorkspace = () => {
             });
             navigateToNextWorkspace();
         },
+        
         onError: (error) => {
             console.log('Error while deleting the workspace: ', error);
             toast.error('Error while deleting the workspace');
