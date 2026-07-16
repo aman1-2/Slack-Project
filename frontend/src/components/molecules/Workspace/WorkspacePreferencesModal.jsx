@@ -16,6 +16,7 @@ export const WorkspacePreferencesModal = () => {
     async function handleDeleteWorkspace() {
         try {
             await deleteWorkspaceMutation();
+            setOpenWorkspacePreferenceModal(false);
         } catch(error) {
             console.log('Error Faced while deleting the workspace: ', error);
             throw error.response.data;

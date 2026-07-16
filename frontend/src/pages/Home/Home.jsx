@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { UserButton } from '@/components/atoms/UserButton/UserButton';
 import { useFetchWorkspace } from '@/hooks/apis/workspaces/useFetchWorkspace';
+import { useCreateWorkspaceModal } from '@/hooks/context/useCreateWorkspaceModal';
 
 export const Home = () => {
     const { isPending, workspaces } = useFetchWorkspace();
 
     const navigate = useNavigate();
+
+    const { setOpenCreateWorkspaceModal } = useCreateWorkspaceModal();
 
     console.log(workspaces);
 
@@ -16,12 +19,13 @@ export const Home = () => {
 
         console.log('Workspace is downloaded: ', workspaces.data);
 
-        if(workspaces.data.length === 0 || !workspaces) {
-            console.log('No workspace found need to create one'); 
+        if(!workspaces || workspaces?.data.length === 0) {
+            console.log('No workspace found need to create one');
+            setOpenCreateWorkspaceModal(true); 
         } else {
             navigate(`/workspaces/${workspaces.data[0]._id}`);
         }
-    }, [isPending, workspaces, navigate]);
+    }, [isPending, workspaces, navigate, setOpenCreateWorkspaceModal]);
 
     return(
         <>
