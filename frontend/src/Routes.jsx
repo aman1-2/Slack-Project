@@ -6,8 +6,8 @@ import SignupCardContainer from '@/components/organism/Auth/SignupCardContainer'
 import { Auth } from '@/pages/Auth/Auth';
 import Home from '@/pages/Home/Home';
 import NotFound from '@/pages/NotFound/NotFound';
-
-import { WorkspaceLayout } from './pages/Workspace/Layout';
+import JoinPage from '@/pages/Workspace/JoinPage';
+import { WorkspaceLayout } from '@/pages/Workspace/Layout';
 
 const AppRoutes = () => {
     return(
@@ -19,6 +19,7 @@ const AppRoutes = () => {
             <Route path="/auth/signup" element={<Auth><SignupCardContainer /></Auth>} ></Route>
             <Route path="/auth/signin" element={<Auth><SigninCardContainer /></Auth>} ></Route>
             <Route path="/workspaces/:workspaceId/channels/:channelId" element={<ProtectedRoute>  </ProtectedRoute>}></Route>
+            <Route path="/workspaces/join/:workspaceId" element={<JoinPage />} />
 
             <Route path='/*' element={<NotFound></NotFound>} />
           </Routes>

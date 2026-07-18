@@ -1,4 +1,5 @@
 import { CopyIcon, RefreshCcwIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -13,9 +14,9 @@ const WorkspaceInviteModal = ({ openInviteModal, setOpenInviteModal, workspaceNa
     // console.log(currentWorkspace?.data?.joinCode);
 
     async function handleCopy() {
-        const inviteLink = `${window.location.origin}/join/${joinCode}`;
+        const inviteLink = `${joinCode}`;
         await navigator.clipboard.writeText(inviteLink);
-        toast.info('Invite Link copied in Clipboard');
+        toast.info('Invite Code copied in Clipboard');
     }
 
     async function handleResetCode() {
@@ -48,9 +49,16 @@ const WorkspaceInviteModal = ({ openInviteModal, setOpenInviteModal, workspaceNa
                         variant="ghost"
                         onClick={handleCopy}
                     >
-                        Copy Invite Link
+                        Copy Code
                         <CopyIcon className="size-4 ml-2" />
                     </Button>
+
+                    <Link 
+                        className='flex items-center gap-1.5' 
+                        to={`/workspaces/join/${workspaceId}`}
+                    >
+                        <span className='text-blue-600'>Redirect to Join Page</span>
+                    </Link>
                 </div>
 
                 <div className="flex items-center justify-center w-full">
