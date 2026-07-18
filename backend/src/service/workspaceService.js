@@ -318,13 +318,51 @@ export const addChannelToWorkspaceService = async (workspaceId, channelName, use
     }
 }
 
-export const resetWorkspaceJoinCodeService = async function(workspaceId, userId) {
+export const resetWorkspaceJoinCodeService = async (workspaceId, userId) => {
     try {
         const newJoinCode = uuidv4().toUpperCase();
         const updatedWorkspace = await updateWorkspaceService(workspaceId,{ joinCode: newJoinCode }, userId);
         return updatedWorkspace;
     } catch(error) {
         console.log("Reset Join-Code of Workspace Service Layer Error: ", error);
+        throw error;
+    }
+}
+
+export const joinWorkspaceService = async (workspaceId, joinCode, userId) => {
+    try{
+        const workspace = await workspaceRepository.getWorkspaceDetailsById(workspaceId);
+
+        if(!workspace) {
+            throw new ClientError({
+                explanation: 'Invalid data sent from the client',
+                message: 'Workspace not Found',
+                statusCode: 404
+            });
+        }
+
+        if(workspace.joinCode !== joinCode) {
+            throw new ClientError({
+                explanation: 'Invalid Join Code sent from the client',
+                message: 'Invalid Join Code',
+                statusCode: 401
+            });
+        }
+
+        const updatedWorkspace = await workspaceRepository.addMemberToWorkspace(
+            workspaceId, userId, 'member'
+        );
+
+        // // Mail request added to the queue whenever new member is added
+        // addEmailtoMailQueue({
+        //     ...workspaceJoinMail(workspace.name),
+        //     to: isValidUser.email
+        // });
+
+        return updatedWorkspace;
+
+    } catch(error) {
+        console.log("Join Workspace Service Layer Error: ", error);
         throw error;
     }
 }

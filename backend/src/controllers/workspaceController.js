@@ -1,4 +1,4 @@
-import { addChannelToWorkspaceService, addMemberToWorkspaceService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByJoinCodeService, getWorkspaceService, getWorkspaceUserIsMemberOfService, resetWorkspaceJoinCodeService, updateWorkspaceService } from "../service/workspaceService.js";
+import { addChannelToWorkspaceService, addMemberToWorkspaceService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByJoinCodeService, getWorkspaceService, getWorkspaceUserIsMemberOfService, joinWorkspaceService, resetWorkspaceJoinCodeService, updateWorkspaceService } from "../service/workspaceService.js";
 import { customErrorResponse, internalErrorResponse, successResponse } from "../utils/common/responseObject.js"
 
 export const createWorkspaceController = async (req, res) => {
@@ -196,6 +196,32 @@ export const resetWorkspaceJoinCodeController = async (req, res) => {
         );
     } catch(error) {
         console.log("Reset Join-Code of Workspace Controller Layer Error: ", error);
+
+        if(error.statusCode) {
+            return res.status(error.statusCode).json(
+                customErrorResponse(error)
+            );
+        }
+
+        return res.status(500).json(
+            internalErrorResponse(error)
+        );
+    }
+}
+
+export const joinWorkspaceController = async (req, res) => {
+    try {
+        const response = await joinWorkspaceService(
+            req.params.workspaceId,
+            req.body.joinCode,
+            req.user
+        );
+
+        return res.status(200).json(
+            successResponse(response, 'Successfully Joined the Workspace')
+        );
+    } catch(error) {
+        console.log("Join Workspace Controller Layer Error: ", error);
 
         if(error.statusCode) {
             return res.status(error.statusCode).json(
