@@ -97,3 +97,21 @@ export const addChannelRequest = async({ workspaceId, channelName, token}) => {
         throw error.response?.data;
     }
 };
+
+export const resetJoinCodeRequest = async ({ workspaceId, token }) => {
+    try{
+        const response = await axios.put(`/workspaces/${workspaceId}/joinCode/reset`, 
+            { workspaceId },
+            { 
+                headers: {
+                    'x-access-token': token
+                }
+            }
+        );
+
+        return response?.data;
+    } catch(error) {
+        console.log('API Request Error while reseting the Join-Code for workspace: ', error);
+        throw error.response?.data;
+    }
+};
