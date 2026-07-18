@@ -110,6 +110,7 @@ export const resetJoinCodeRequest = async ({ workspaceId, token }) => {
         );
 
         return response?.data;
+        
     } catch(error) {
         console.log('API Request Error while reseting the Join-Code for workspace: ', error);
         throw error.response?.data;
