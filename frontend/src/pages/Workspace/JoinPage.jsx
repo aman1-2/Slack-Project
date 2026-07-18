@@ -1,16 +1,26 @@
 import {  useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 // import VerificationInput from 'react-verification-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import useJoinWorkspace from '@/hooks/apis/workspaces/useJoinWorkspace';
 
 const JoinPage = () => {
     const { workspaceId } = useParams();
     const [joinCode, setJoinCode] = useState('');
+    const navigate = useNavigate();
+
+    const { joinWorkspaceMutation } = useJoinWorkspace(workspaceId);
 
     async function handleAddMemberToWorkspace() {
         console.log('Adding Member to workspace');
+        try{
+            await joinWorkspaceMutation(joinCode);
+            navigate(`/workspaces/${workspaceId}`);
+        } catch(error) {
+            console.log('Error faced while adding the member: ', error);
+        }
     }
 
     useEffect(() => {

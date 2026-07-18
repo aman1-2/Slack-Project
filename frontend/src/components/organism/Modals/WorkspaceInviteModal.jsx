@@ -14,8 +14,8 @@ const WorkspaceInviteModal = ({ openInviteModal, setOpenInviteModal, workspaceNa
     // console.log(currentWorkspace?.data?.joinCode);
 
     async function handleCopy() {
-        const inviteLink = `${joinCode}`;
-        await navigator.clipboard.writeText(inviteLink);
+        const inviteCode = `${joinCode}`;
+        await navigator.clipboard.writeText(inviteCode);
         toast.info('Invite Code copied in Clipboard');
     }
 
@@ -40,7 +40,7 @@ const WorkspaceInviteModal = ({ openInviteModal, setOpenInviteModal, workspaceNa
                 </DialogHeader>
 
                 <div className="flex flex-col items-center justify-center py-10 gap-y-4">
-                    <p className='font-bold text-2xl uppercase'>
+                    <p className='font-bold text-xl uppercase'>
                         { joinCode }
                     </p>
 
