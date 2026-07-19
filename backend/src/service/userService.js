@@ -4,13 +4,30 @@ import userRepository from "../repositories/userRepository.js"
 import ClientError from "../utils/errors/clientError.js";
 import ValidationError from "../utils/errors/validationError.js";
 import { createJWT } from '../utils/common/authUtils.js';
+import { ENABLE_EMAIL_VERIFICATION } from '../config/serverConfig.js';
+import { addEmailtoMailQueue } from '../producers/mailQueueProducer.js';
+import { verifyEmailMail } from '../utils/common/mailObject.js';
 
 export const signUpService = async (data) => {
     try {
-        const newUser = await userRepository.create(data);
+        const newUser = await userRepository.signUpUser(data);
+
+        console.log(ENABLE_EMAIL_VERIFICATION);
+
+        if(ENABLE_EMAIL_VERIFICATION) {
+            console.log(newUser);
+            console.log(newUser.verificationToken);
+            console.log(newUser.email);
+            // send verification email
+            addEmailtoMailQueue({
+                ...verifyEmailMail(newUser.verificationToken),
+                to: newUser.email
+            });
+        }
+
         return newUser;
     } catch (error) {
-        console.log('User service error', error);
+        console.log('User signUp service error', error);
         
         if (error.name === 'ValidationError') {
             throw new ValidationError(
@@ -29,6 +46,44 @@ export const signUpService = async (data) => {
                 'A user with same email or username already exists'
             );
         }
+    }
+}
+
+export const verifyTokenService = async (token) => {
+    try {
+        console.log("Received token:", token);
+        
+        const user = await userRepository.getByToken(token);
+
+        console.log(user);
+
+        if(!user) {
+            throw new ClientError({
+                explanation: "Invalid data sent from the client",
+                message: "Invalid email verification token",
+                statusCode: 400
+            });
+        }
+
+        // check is token has expired or not
+        if(user.verificationTokenExpiry < Date.now()) {
+            throw new ClientError({
+                explanation: "Invalid data sent from the client",
+                message: "Email verification token expired",
+                statusCode: 400
+            });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = null;
+        user.verificationTokenExpiry = null;
+
+        await user.save();
+
+        return user;
+    } catch(error) {
+        console.log("User email token verification user service layer Error: ", error);
+        throw error;
     }
 }
 

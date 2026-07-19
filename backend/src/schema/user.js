@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from 'uuid';
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -31,17 +32,33 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    verificationToken: {
+        type: String
+    },
+    verificationTokenExpiry: {
+        type: Date
     }
 }, { timestamps: true });
 
 userSchema.pre('save', async function saveUser() {
     const user = this;
 
-    const SALT = bcrypt.genSaltSync(9);
-    const hashedPasswrord = bcrypt.hashSync(user.password, SALT);
-    user.password = hashedPasswrord;
+    if(user.isNew) {
+        const SALT = await bcrypt.genSaltSync(9);
+        const hashedPasswrord = await bcrypt.hashSync(user.password, SALT);
+        user.password = hashedPasswrord;
 
-    user.avatar = `https://robohash.org/${user.username}`;
+        user.avatar = `https://robohash.org/${user.username}`;
+
+        user.verificationToken = uuidv4().substring(0, 10).toUpperCase();
+
+        user.verificationTokenExpiry = Date.now() + 3600000 // 1 hour
+    }
 });
 
 const User = mongoose.model('User', userSchema);

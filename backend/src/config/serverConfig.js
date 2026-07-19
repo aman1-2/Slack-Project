@@ -21,3 +21,7 @@ export const MAIL_ID = process.env.MAIL_ID;
 export const REDIS_HOST = process.env.REDIS_URL;
 
 export const REDIS_PORT = process.env.REDIS_PORT;
+
+export const ENABLE_EMAIL_VERIFICATION = process.env.ENABLE_EMAIL_VERIFICATION || false;
+
+export const APP_LINK = process.env.APP_LINK || 'http://localhost:3000';

@@ -9,6 +9,7 @@ import apiRouter from './routes/index.js';
 import bullServerAdapter from './config/bullBoardConfig.js';
 import messageSocketHandlers from './controllers/messageSocketController.js';
 import channelSocketHandler from './controllers/channelSocketController.js';
+import { verifyEmailController } from './controllers/userController.js';
 
 const app = express();
 const server = createServer(app);
@@ -27,6 +28,8 @@ app.get('/ping', (req, res) => {
     message: 'Testing the Server. A Ping Route.'
   });
 });
+
+app.get('/verify/:token', verifyEmailController);
 
 io.on('connection', (socket) => {
   console.log('Web-Socket Connection Successful.', socket.id);

@@ -1,4 +1,4 @@
-import { Worker } from 'bullMq';
+import { Worker } from 'bullmq';
 
 import mailer from "../config/mailConfig.js";
 import redisConfig from '../config/redisConfig.js';
