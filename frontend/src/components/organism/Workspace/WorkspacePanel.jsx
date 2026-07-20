@@ -14,8 +14,6 @@ export const WorkspacePanel = () => {
     const { isFetching, isSuccess, workspaceByIdDetails } = useGetWorkspaceById(workspaceId);
     const { setOpenCreateChannelModal } = useCreateChannelModal();
 
-    console.log('Members details: ', workspaceByIdDetails?.data?.members);
-
     if(isFetching) {
         return(
             <div className="flex flex-col gap-y-2 h-full items-center justify-center text-white">

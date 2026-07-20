@@ -16,9 +16,7 @@ export const useSignUp = () => {
         },
         onError: (error) => {
             console.log('Failed to Sign-Up: ', error);
-            toast.error('Failed to Sign-Up', {
-                description: error.message,
-            });
+            toast.error('Failed to Sign-Up');
         }
     });
     

@@ -30,9 +30,7 @@ const useSignIn = () => {
 
         onError: (error) => {
             console.log('Failed to log in User: ', error);
-            toast.error('Failed to login User', {
-                description: error.message
-            });
+            toast.error('Failed to login User');
         }
     });
 
