@@ -9,7 +9,7 @@ export default function channelSocketHandler (io, socket) {
 
             console.log(`User with Socket-id: ${socket.id} Joined Room Id: ${roomId}`);
 
-            cb({
+            cb?.({
                 success: true,
                 message: "Successfully Joined the Channel",
                 data: roomId
